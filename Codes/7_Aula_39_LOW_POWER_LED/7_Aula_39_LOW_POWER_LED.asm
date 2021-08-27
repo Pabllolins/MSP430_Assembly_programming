@@ -10,7 +10,7 @@
 
 #include <msp430xG46x.h>
 ;-------------------------------------------------------------------------------
-		RSEG CSTACK ; Define stack segment
+		RSEG CSTACK ; Define stack segment (RSEG - Register Segment)
 ;-------------------------------------------------------------------------------
 		RSEG CODE ; Assemble to Flash memory
 ;-----------------------------------------------------------------------------
@@ -20,7 +20,7 @@ SetupFLL 	bis.b #XCAP14PF,&FLL_CTL0 ; Configure load caps
 		bis.b #BIT1,&P5DIR ; Set P5.1 as Output
 SetupBT 	mov.b #BTDIV+BT_fCLK2_DIV16, & BTCTL ; ACLK/(256*16)
 		bis.b #BTIE,&IE2 ; Enable BT interrupt
-Mainloop 	bis.w #LPM3+GIE,SR ; Enter LPM3, enable interrupts
+Mainloop 	bis.w #LPM3+GIE,SR ; Enter LPM3, enable interrupts (SR - Status Register)(GIE - General Interrupt Enable)
 		nop ; Required for Debugger
 ;------------------------------------------------------------------------------
 Basic_Timer_ISR ;// Basic Timer Interrupt Service Routine
@@ -30,7 +30,7 @@ Basic_Timer_ISR ;// Basic Timer Interrupt Service Routine
 ;------------------------------------------------------------------------------
 		COMMON INTVEC ; Interrupt Vectors
 ;------------------------------------------------------------------------------
-		ORG RESET_VECTOR ; MSP430 RESET Vector
+		ORG RESET_VECTOR ; MSP430 RESET Vector (ORG - Origin)
 		DW RESET ;
 		ORG BASICTIMER_VECTOR ; MSP430 Basic Timer Interrupt Vector
 		DW Basic_Timer_ISR
