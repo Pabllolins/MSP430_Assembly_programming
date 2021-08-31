@@ -20,32 +20,29 @@ Partida 	mov.w #SFE(CSTACK),SP ; (1ª Obrigação) Initialize stackpointer
 StopWDT 	mov.w #WDTPW+WDTHOLD,&WDTCTL ; Stop WDT (3ª Obrigação) Manipular o Watch dog time
 
 		bic.b 	#008h,&P1SEL ; (08h)00001000 - Port P1 - pin 3 selection
-SetupPorta_1	bis.b 	#0F7h,&P1DIR ; (F7h)11110111 - just pin 3 is input, and all others pin is output
-		bis.b 	#008h,&P1REN ; Port P1 - pin 3 resistor enable
-		bis.b 	#008h,&P1IE ; Port P1 - pin 3 interrupt enable
+		bic.b 	#008h,&P1DIR ; (F7h)00001000 - Port P1 - pin 3 as input (clear putting 0 to be input)				
+		bis.b 	#008h,&P1REN ; (08h)00001000 - Port P1 - pin 3 resistor enable
+		bis.b 	#008h,&P1IE ; (08h)00001000 - Port P1 - pin 3 interrupt enable
 
-ApagaTudo	bic.b 	#0FFh,&P1OUT ; (FFh)11111111 - LED1 => P1.0 and all another pins from P1 is clear
-		;bis.b 	#008h,&P1OUT ; Port P1 - pin 3 output
-		;bis.b 	#P1IE,&IE1 ; (Port P1 interrupt enable) - (IE1 - Interrupt enable 1) //Habilita a interrupução do periferico
-		
+		bis.b 	#001h,&P1DIR ; (01h)00000001 - LED1 => P1.0 as output (clear putting 1 to be output)
+ApagaP1_0	bic.b 	#001h,&P1OUT ; (01h)00000001 - LED1 => P1.0 and all another pins from P1 is clear
+
 Loop	 	bis.w 	#LPM3+GIE,SR ; Enter LPM3, enable interrupts - (LPM3 - Low Power Mode 3)(GIE - General Interrupt Enable)(SR - Status Register)
-		;jmp ApagaTudo
-		;nop ; Required for Debugger
+		nop;
 ;------------------------------------------------------------------------------
-Port1_int	xor.b 	#001h,&P1OUT ; (01h)01 - Toggle P1.0 (LED)
-		bic.b 	#008h,&P1IFG ; Port P1 interrupt flag		
-		;bis.b 	#001h,&P1OUT ; (01h)00000001 - LED1 => P1.0 - Set the value 1 at this pin
-		reti //Retorno de interrupção
-				
+AcendeLed1	bis.b 	#001h,&P1OUT ; (01h)00000001 - LED1 => P1.0 - Set the value 1 at this pin
+Porta1_int	bit.b	#008h,&P1IN ; (08h)00001000 - Makes read at pin 3 from PORT1
+		jz 	AcendeLed1 ; If the previously test results 0, jump to label
+		bic.b 	#008h,&P1IFG ; Port P1 - pin 3 interrupt flag			
+		jmp ApagaP1_0			
+		reti //Retorno de interrupção				
 ;------------------------------------------------------------------------------
 ;		Interrupt Vectors 
 ;------------------------------------------------------------------------------
-		COMMON INTVEC ;(COMMON) - INTVEC (INTERRUPT VECTOR)
-		
+		COMMON INTVEC ; Interrupt Vectors //(COMMON) Begins a common segment.
 		ORG RESET_VECTOR ; (ORG - Origin) MSP430 RESET Vector 
 		DW Partida ; (Declara Word) da origem anterior (2ª Obrigação) Declara o vetor de reset
-		ORG PORT1_VECTOR ; MSP430 Basic Timer Interrupt Vector
-		DW Port1_int
-		
+		ORG PORT1_VECTOR ; MSP430 Basic Timer Interrupt Vector 0xFFE4
+		DW Porta1_int		
 		END
 ;------------------------------------------------------------------------------
