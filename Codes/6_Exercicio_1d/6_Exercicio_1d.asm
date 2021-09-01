@@ -10,7 +10,7 @@
 ;
 ;P1.0 => LED1 (OUT)
 ;P1.3 => Switch S2 (IN)
-;P1.4 => Switch S2 
+;P1.4 => Switch S1 
 ;P1.6 => LED2 (OUT)		
 
 		ORG 	0F800h ; Program Start
