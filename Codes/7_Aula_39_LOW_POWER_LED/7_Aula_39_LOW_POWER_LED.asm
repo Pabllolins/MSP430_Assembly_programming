@@ -18,7 +18,7 @@ RESET 		mov.w #SFE(CSTACK),SP ; Initialize stackpointer
 StopWDT 	mov.w #WDTPW+WDTHOLD,&WDTCTL ; Stop WDT
 SetupFLL 	bis.b #XCAP14PF,&FLL_CTL0 ; Configure load caps
 		bis.b #BIT1,&P5DIR ; Set P5.1 as Output
-SetupBT 	mov.b #BTDIV+BT_fCLK2_DIV16, & BTCTL ; ACLK/(256*16)
+SetupBT 	mov.b #BTDIV+BT_fCLK2_DIV16, &BTCTL ; ACLK/(256*16)
 		bis.b #BTIE,&IE2 ; Enable BT interrupt
 Mainloop 	bis.w #LPM3+GIE,SR ; Enter LPM3, enable interrupts (SR - Status Register)(GIE - General Interrupt Enable)
 		nop ; Required for Debugger

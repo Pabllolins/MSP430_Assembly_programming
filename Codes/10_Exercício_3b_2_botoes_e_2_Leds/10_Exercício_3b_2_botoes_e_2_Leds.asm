@@ -51,7 +51,7 @@ Porta1_int	bit.b	#008h,&P1IN ; (08h)00001000 - Makes read at pin 3 from PORT1
 		COMMON INTVEC ; Interrupt Vectors //(COMMON) Begins a common segment.
 		ORG RESET_VECTOR ; (ORG - Origin) MSP430 RESET Vector 
 		DW Partida ; (Declara Word) da origem anterior (2ª Obrigação) Declara o vetor de reset
-		ORG PORT1_VECTOR ; MSP430 Basic Timer Interrupt Vector 0xFFE4
+		ORG PORT1_VECTOR ; 
 		DW Porta1_int		
 		END
 ;------------------------------------------------------------------------------
