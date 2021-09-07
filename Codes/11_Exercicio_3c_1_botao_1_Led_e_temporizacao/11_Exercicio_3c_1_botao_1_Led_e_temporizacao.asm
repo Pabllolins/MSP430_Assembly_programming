@@ -1,7 +1,7 @@
 ;--------------------------------------------------------
 ;Programer: Pabllo Lins
 ;Date: 01/09/2021(dd/mm/yyyy)
-;Code: 39 - PISCANDO UM LED COM BAIXO CONSUMO
+;Code: Exercicio_3c_1_botao_1_Led_e_temporizacao
 ;MCU: MSP430FG4618
 
 ;MSP430FG4618F/2013 Experimenter Board	(SIMULATOR)
